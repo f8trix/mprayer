@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="http://fonts.googleapis.com/css?family=Amiri&subset=arabic,latin" rel="stylesheet">
+    <title>مسابقة الصلوات المحمدية</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Amiri', serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+            direction: rtl;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            padding: 30px;
+            overflow: hidden;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 2.2rem;
+        }
+        
+        .subtitle {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+        }
+        
+        .form-container {
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+            text-align: right;
+        }
+        
+        select, input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+            text-align: right;
+            direction: rtl;
+        }
+        
+        select:focus, input:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+        
+        button {
+            background: linear-gradient(to left, #3498db, #2c3e50);
+            color: white;
+            border: none;
+            padding: 14px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s;
+            width: 100%;
+            margin-top: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .success-message {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            text-align: center;
+            font-weight: 500;
+            animation: fadeIn 0.5s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 30px;
+            padding: 20px;
+            background: linear-gradient(to left, #2c3e50, #4a6491);
+            color: white;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .stat-item h3 {
+            font-size: 2rem;
+            margin-bottom: 5px;
+        }
+        
+        .leaderboard {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        .leaderboard-header {
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #3498db;
+            color: #2c3e50;
+            text-align: center;
+        }
+        
+        .user-ranking {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+            align-items: center;
+        }
+        
+        .user-ranking:hover {
+            background-color: #f1f2f6;
+            border-radius: 5px;
+            padding-right: 10px;
+            padding-left: 10px;
+        }
+        
+        .rank {
+            font-weight: bold;
+            color: #2c3e50;
+            min-width: 30px;
+            text-align: center;
+        }
+        
+        .user-info {
+            flex: 1;
+            text-align: right;
+            margin-right: 15px;
+        }
+        
+        .user-points {
+            font-weight: bold;
+            color: #e74c3c;
+            min-width: 80px;
+            text-align: left;
+        }
+        
+        .top-three {
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            border-radius: 8px;
+            margin-bottom: 10px;
+            padding: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .top-three .rank {
+            font-size: 1.3rem;
+            color: #c27c00;
+        }
+        
+        .top-three .user-points {
+            font-size: 1.2rem;
+            color: #c23c00;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            
+            .stats {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .user-ranking {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+            }
+            
+            .user-info {
+                margin-right: 0;
+            }
+            
+            .user-points {
+                align-self: flex-end;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>مسابقة الصلوات المحمدية</h1>
+            <p class="subtitle">اللهم صل على محمد وآل محمد</p>
+        </header>
+        
+        <div class="form-container">
+            <div class="form-group">
+                <label for="groupSelect">اختر مجموعتك</label>
+                <select id="groupSelect">
+                    <option value="">-- اختر مجموعة --</option>
+                    <option value="group1">مجموعة قباء</option>
+                    <option value="group2">مجموعة البقيع</option>
+                    <option value="group3">مجموعة جبل أحد</option>
+                </select>
+            </div>
+            
+            <div id="userSection" class="form-group hidden">
+                <label for="userSelect">اختر اسمك</label>
+                <select id="userSelect">
+                    <option value="">-- اختر اسمك --</option>
+                </select>
+            </div>
+            
+            <div id="pointsSection" class="form-group hidden">
+                <label for="pointsInput">أدخل عدد صلواتك</label>
+                <input type="number" id="pointsInput" min="0" placeholder="أدخل عدد الصلوات">
+                <button id="submitBtn">إرسال</button>
+            </div>
+        </div>
+        
+        <div id="successMessage" class="success-message hidden">
+            تم إرسال عدد الصلوات بنجاح!
+        </div>
+        
+        <div class="stats">
+            <div class="stat-item">
+                <h3 id="totalUsers">0</h3>
+                <p>إجمالي الزائرين</p>
+            </div>
+            <div class="stat-item">
+                <h3 id="totalPoints">0</h3>
+                <p>إجمالي الصلوات</p>
+            </div>
+        </div>
+        
+        <div class="leaderboard">
+            <h2 class="leaderboard-header">🏆 ترتيب الزائرين</h2>
+            <div id="leaderboardUsers"></div>
+        </div>
+    </div>
+
+    <script>
+        // Auto-detect the current host for API calls
+        const API_BASE_URL = `${window.location.origin}/api`;
+
+        // DOM elements
+        const groupSelect = document.getElementById('groupSelect');
+        const userSection = document.getElementById('userSection');
+        const pointsSection = document.getElementById('pointsSection');
+        const userSelect = document.getElementById('userSelect');
+        const pointsInput = document.getElementById('pointsInput');
+        const submitBtn = document.getElementById('submitBtn');
+        const successMessage = document.getElementById('successMessage');
+        const totalUsers = document.getElementById('totalUsers');
+        const totalPoints = document.getElementById('totalPoints');
+        const leaderboardUsers = document.getElementById('leaderboardUsers');
+
+        // Store users by group
+        let usersByGroup = {
+            group1: [],
+            group2: [],
+            group3: []
+        };
+
+        // Store all users for leaderboard
+        let allUsers = [];
+
+        // Event listeners
+        groupSelect.addEventListener('change', handleGroupChange);
+        submitBtn.addEventListener('click', handleSubmit);
+
+        // Initialize application
+        async function init() {
+            await loadUsers();
+            await updateStats();
+            updateLeaderboard();
+        }
+
+        // Load users from backend
+        async function loadUsers() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/users`);
+                allUsers = await response.json();
+                
+                // Group users by ID ranges for the form
+                usersByGroup.group1 = allUsers.filter(user => user.id >= 1 && user.id <= 30);
+                usersByGroup.group2 = allUsers.filter(user => user.id >= 31 && user.id <= 62);
+                usersByGroup.group3 = allUsers.filter(user => user.id >= 63 && user.id <= 82);
+                
+                console.log('Loaded users:', allUsers);
+            } catch (error) {
+                console.error('Error loading users:', error);
+                alert('خطأ في تحميل المستخدمين من الخادم.');
+            }
+        }
+
+        // Handle group selection
+        function handleGroupChange() {
+            const selectedGroup = groupSelect.value;
+            
+            if (selectedGroup) {
+                // Show user section
+                userSection.classList.remove('hidden');
+                
+                // Populate user dropdown
+                userSelect.innerHTML = '<option value="">-- اختر اسمك --</option>';
+                usersByGroup[selectedGroup].forEach(user => {
+                    const option = document.createElement('option');
+                    option.value = user.id;
+                    option.textContent = user.name;
+                    userSelect.appendChild(option);
+                });
+                
+                // Show points section
+                pointsSection.classList.remove('hidden');
+            } else {
+                // Hide sections if no group selected
+                userSection.classList.add('hidden');
+                pointsSection.classList.add('hidden');
+            }
+        }
+
+        // Handle form submission
+        async function handleSubmit() {
+            const selectedGroup = groupSelect.value;
+            const selectedUserId = parseInt(userSelect.value);
+            const points = parseInt(pointsInput.value);
+            
+            // Validate input
+            if (!selectedGroup || !selectedUserId || isNaN(points) || points < 0) {
+                alert('الرجاء اختيار مجموعة واسمك وإدخال قيمة صلوات صحيحة.');
+                return;
+            }
+            
+            try {
+                // Send update to backend
+                const response = await fetch(`${API_BASE_URL}/users?id=${selectedUserId}&action=points`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ points: points })
+                });
+                
+                if (response.ok) {
+                    // Update local data
+                    const updatedUser = await response.json();
+                    const groupUsers = usersByGroup[selectedGroup];
+                    const userIndex = groupUsers.findIndex(user => user.id === selectedUserId);
+                    if (userIndex !== -1) {
+                        groupUsers[userIndex].points = updatedUser.points;
+                    }
+                    
+                    // Update all users array
+                    const allUserIndex = allUsers.findIndex(user => user.id === selectedUserId);
+                    if (allUserIndex !== -1) {
+                        allUsers[allUserIndex].points = updatedUser.points;
+                    }
+                    
+                    // Update statistics and leaderboard
+                    await updateStats();
+                    updateLeaderboard();
+                    
+                    // Show success message
+                    successMessage.classList.remove('hidden');
+                    setTimeout(() => {
+                        successMessage.classList.add('hidden');
+                    }, 3000);
+                    
+                    // Reset form
+                    pointsInput.value = '';
+                } else {
+                    const error = await response.json();
+                    alert('خطأ في تحديث عدد الصلوات: ' + (error.error || 'خطأ غير معروف'));
+                }
+            } catch (error) {
+                console.error('Error submitting points:', error);
+                alert('خطأ في الاتصال بالخادم.');
+            }
+        }
+
+        // Update statistics from backend
+        async function updateStats() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/groups-summary`);
+                const stats = await response.json();
+                
+                totalUsers.textContent = stats.totalUsers;
+                totalPoints.textContent = stats.totalPoints;
+            } catch (error) {
+                console.error('Error loading statistics:', error);
+            }
+        }
+
+        // Update leaderboard
+        function updateLeaderboard() {
+            leaderboardUsers.innerHTML = '';
+            
+            // Sort users by points (descending)
+            const sortedUsers = [...allUsers].sort((a, b) => b.points - a.points);
+            
+            // Display top 20 users or all if less than 20
+            const displayUsers = sortedUsers.slice(0, 20);
+            
+            displayUsers.forEach((user, index) => {
+                const rank = index + 1;
+                const userElement = document.createElement('div');
+                userElement.className = `user-ranking ${rank <= 3 ? 'top-three' : ''}`;
+                
+                userElement.innerHTML = `
+                    <div class="rank">${rank}</div>
+                    <div class="user-info">${user.name}</div>
+                    <div class="user-points">${user.points} صلاة</div>
+                `;
+                
+                leaderboardUsers.appendChild(userElement);
+            });
+            
+            // Show message if no users have points yet
+            if (sortedUsers.length === 0 || sortedUsers[0].points === 0) {
+                leaderboardUsers.innerHTML = '<div style="text-align: center; padding: 20px; color: #7f8c8d;">لا توجد نتائج حتى الآن</div>';
+            }
+        }
+
+        // Initialize the application when page loads
+        document.addEventListener('DOMContentLoaded', init);
+
+        // Add auto-refresh every 10 seconds to see real-time updates from other users
+        setInterval(async () => {
+            await loadUsers();
+            await updateStats();
+            updateLeaderboard();
+        }, 10000);
+    </script>
+</body>
+</html>
