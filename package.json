@@ -1,14 +1,10 @@
 {
-  "name": "points-counter",
+  "name": "mprayer",
   "version": "1.0.0",
-  "description": "مسابقة الصلوات المحمدية - نظام عد النقاط",
   "scripts": {
     "dev": "vercel dev"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.38.0"
-  },
-  "devDependencies": {
-    "vercel": "^28.16.0"
   }
 }
